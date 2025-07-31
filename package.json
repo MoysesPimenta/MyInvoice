@@ -6,8 +6,10 @@
     "node": ">=18 <=20"
   },
   "scripts": {
-    "lint:js": "eslint . --ext .js",
-    "lint:styles": "stylelint \"**/*.css\""
+    "lint:js": "eslint . --ext .js,.gs",
+    "lint:styles": "stylelint \"**/*.css\"",
+    "lint": "npm run lint:js && npm run lint:styles",
+    "format": "prettier --write \"**/*.{js,gs,css,html}\""
   },
   "devDependencies": {
     "eslint": "^8.56.0",
