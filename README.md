@@ -1,7 +1,5 @@
 # MyInvoice
-
- codex/draft-user_guide.md-and-update-readme.md
-![Deploy Pages Status](https://github.com/MoysesPimenta/MyInvoice/actions/workflows/deploy_pages.yml/badge.svg)
+[Deploy Pages Status](https://github.com/MoysesPimenta/MyInvoice/actions/workflows/deploy_pages.yml/badge.svg)
 
 This project automates invoice management using Google Apps Script and a simple web front end.
 Node.js `20.19.0` is required to ensure compatibility with tooling. Other Node 20 versions may work, but the recommended range is `>=18 <=20`.
@@ -27,6 +25,7 @@ npx clasp open         # open the script editor in your browser
 ```
 
 This project automates invoice management using Google Apps Script and a simple web front end.
+
 Node.js `20.19.0` is required to ensure compatibility with tooling. Other Node 20 versions may work, but the recommended range is `>=18 <=20`.
 
 ## Running Tests in Apps Script
