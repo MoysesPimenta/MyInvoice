@@ -1,6 +1,9 @@
 // @flow
 /**
- * App entry point: builds custom menus and installs triggers.
+ * App entry point. Builds custom menus and ensures triggers exist.
+ *
+ * @return {void}
+ * @sideEffects Creates menus and triggers in the active spreadsheet.
  */
 function onOpen() {
   SpreadsheetApp.getUi()
@@ -18,7 +21,10 @@ function onOpen() {
 }
 
 /**
- * Registers time-driven triggers for monthly billing and overdue updates.
+ * Registers time-driven triggers used by the automation.
+ *
+ * @return {void}
+ * @sideEffects Creates new project triggers.
  */
 function createTriggers() {
   ScriptApp.newTrigger("runMonthlyBilling")
@@ -34,7 +40,10 @@ function createTriggers() {
 }
 
 /**
- * Ensures required triggers exist before running automation.
+ * Ensures required triggers exist and removes duplicates.
+ *
+ * @return {void}
+ * @sideEffects Creates and deletes project triggers.
  */
 function ensureTriggers() {
   var triggers = ScriptApp.getProjectTriggers();
@@ -107,8 +116,10 @@ function sheetToJson_(name) {
 
 /**
  * Main GET handler returning JSON for project endpoints.
+ *
  * @param {GoogleAppsScript.Events.DoGet} e Event object.
  * @return {GoogleAppsScript.Content.TextOutput} JSON output.
+ * @sideEffects None.
  */
 function doGet(e) {
   var path = e && e.pathInfo ? String(e.pathInfo).replace(/^\//, "") : "";
@@ -128,7 +139,9 @@ function doGet(e) {
 
 /**
  * Returns invoices data as JSON for the web front-end.
+ *
  * @return {GoogleAppsScript.Content.TextOutput} JSON output.
+ * @sideEffects None.
  */
 function getInvoicesJSON() {
   return sheetToJson_("Invoices");
@@ -136,7 +149,9 @@ function getInvoicesJSON() {
 
 /**
  * Returns metadata for available service forms.
+ *
  * @return {{forms: Array<{id: string, name: string}>}}
+ * @sideEffects None.
  */
 function getFormMetadata() {
   return { forms: [{ id: "service", name: "Service Entry" }] };
@@ -144,7 +159,9 @@ function getFormMetadata() {
 
 /**
  * Lists the five most recent invoices for the dashboard.
+ *
  * @return {Array<{number: string, client: string}>}
+ * @sideEffects Reads spreadsheet data.
  */
 function listRecentInvoices() {
   var sheet = SpreadsheetApp.getActive().getSheetByName("Invoices");

@@ -5,6 +5,9 @@ module.exports = [
       ecmaVersion: 5,
       sourceType: "script"
     },
+    plugins: {
+      jsdoc: require("eslint-plugin-jsdoc")
+    },
     rules: {}
   },
   {
@@ -21,7 +24,8 @@ module.exports = [
       }
     },
     plugins: {
-      flowtype: require("eslint-plugin-flowtype")
+      flowtype: require("eslint-plugin-flowtype"),
+      jsdoc: require("eslint-plugin-jsdoc")
     },
     rules: {
       "flowtype/define-flow-type": 1,
