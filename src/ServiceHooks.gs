@@ -2,6 +2,8 @@
 /**
  * Sheet onEdit hook for Services sheet.
  * @param {GoogleAppsScript.Events.SheetsOnEdit} e Edit event object.
+ * @return {void}
+ * @sideEffects Updates the Services sheet when a row is edited.
  */
 function addService(e) {
   if (!e || !e.range || e.range.getSheet().getName() !== "Services") {
@@ -32,6 +34,8 @@ function addService(e) {
 /**
  * Adds a new service record from the web front-end.
  * @param {Object} svc Service data from the form.
+ * @return {void}
+ * @sideEffects Writes a new row to the Services sheet.
  */
 function addServiceRecord(svc) {
   var ss = SpreadsheetApp.getActive();

@@ -8,6 +8,7 @@
  * @param {GoogleAppsScript.Spreadsheet.Sheet} machinesSheet Machines sheet.
  * @param {Date} billingDate Billing date for the charge.
  * @return {Object.<string, Array<Object>>} Map of charges by client ID.
+ * @sideEffects Updates last billed date in the machines sheet.
  */
 function getStorageCharges(machinesSheet, billingDate) {
   var machines = machinesSheet.getDataRange().getValues();
@@ -33,6 +34,7 @@ function getStorageCharges(machinesSheet, billingDate) {
  *
  * @param {GoogleAppsScript.Spreadsheet.Sheet} servicesSheet Services sheet.
  * @return {Object.<string, Array<Object>>} Map of charges by client ID.
+ * @sideEffects Marks service rows as billed.
  */
 function getServiceCharges(servicesSheet) {
   var services = servicesSheet.getDataRange().getValues();
@@ -64,6 +66,7 @@ function getServiceCharges(servicesSheet) {
  * @param {number} month Billing month (0-indexed).
  * @return {{invoiceId: number, table: string, total: number, nextId: number}}
  *   Newly created invoice data.
+ * @sideEffects Appends a row to the invoices sheet.
  */
 function createInvoice(
   invoicesSheet,
@@ -108,6 +111,9 @@ function createInvoice(
 
 /**
  * Aggregates unbilled items and generates monthly invoices.
+ *
+ * @return {void}
+ * @sideEffects Reads and writes multiple sheets and sends emails.
  */
 function runMonthlyBilling() {
   var ss = SpreadsheetApp.getActive();
@@ -159,11 +165,14 @@ function runMonthlyBilling() {
 }
 
 /**
- * Generates PDF for invoice and emails the client.
+ * Generates a PDF for the invoice and emails it to the client.
+ *
  * @param {number} invoiceId Invoice ID.
  * @param {string} itemsTable HTML table with line items.
  * @param {number} total Total invoice value.
  * @param {string} clientId Client identifier.
+ * @return {void}
+ * @sideEffects Creates files and sends email messages.
  */
 function generateInvoicePDF(invoiceId, itemsTable, total, clientId) {
   var ss = SpreadsheetApp.getActive();

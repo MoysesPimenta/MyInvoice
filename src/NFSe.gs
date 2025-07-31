@@ -1,7 +1,10 @@
 // @flow
 /**
  * Issues an NFSe for the given invoice.
+ *
  * @param {number} invoiceId Invoice ID to issue NFSe for.
+ * @return {void}
+ * @sideEffects Calls external API and writes response to the sheet.
  */
 function issueNFSe(invoiceId) {
   if (!invoiceId) {

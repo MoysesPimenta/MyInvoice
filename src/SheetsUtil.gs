@@ -8,6 +8,9 @@
 
 /**
  * Ensures all required sheets exist and have the correct headers.
+ *
+ * @return {void}
+ * @sideEffects Creates sheets and header rows if missing.
  */
 function ensureSheets() {
   var ss = SpreadsheetApp.getActive();
@@ -78,6 +81,9 @@ function ensureSheets() {
 /**
  * Creates the invoice template document if not already created.
  * Stores the Doc ID in script properties under 'TEMPLATE_DOC_ID'.
+ *
+ * @return {string} Document ID for the template.
+ * @sideEffects Creates a Google Doc and stores its ID in properties.
  */
 function ensureTemplateDoc() {
   var props = PropertiesService.getScriptProperties();
@@ -107,6 +113,9 @@ function ensureTemplateDoc() {
 
 /**
  * Refreshes dashboard formulas and charts.
+ *
+ * @return {void}
+ * @sideEffects Reads and writes dashboard sheet and inserts charts.
  */
 function refreshDashboards() {
   var ss = SpreadsheetApp.getActive();

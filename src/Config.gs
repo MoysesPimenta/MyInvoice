@@ -18,7 +18,9 @@ var SCRIPT_PROPERTIES = PropertiesService.getScriptProperties();
 
 /**
  * Returns the NFSe API token stored in Script Properties.
+ *
  * @return {string?} token value or null if not set
+ * @sideEffects None.
  */
 function getNFSeToken() {
   return SCRIPT_PROPERTIES.getProperty("NFSE_TOKEN");
@@ -26,7 +28,9 @@ function getNFSeToken() {
 
 /**
  * Returns the PIX QR code URL stored in Script Properties.
+ *
  * @return {string?} QR code image URL or null if not set
+ * @sideEffects None.
  */
 function getPixQrUrl() {
   return SCRIPT_PROPERTIES.getProperty("PIX_QR_URL");
