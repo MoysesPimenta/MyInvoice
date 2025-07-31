@@ -38,35 +38,33 @@ function createTriggers() {
  */
 function ensureTriggers() {
   var triggers = ScriptApp.getProjectTriggers();
-  var hasBilling = false;
-  var hasDashboards = false;
-  var hasEdit = false;
+  var existing = {};
   triggers.forEach(function (t) {
-    if (
-      t.getHandlerFunction() === "runMonthlyBilling" &&
-      t.getEventType() === ScriptApp.EventType.CLOCK
-    ) {
-      hasBilling = true;
-    }
-    if (
-      t.getHandlerFunction() === "refreshDashboards" &&
-      t.getEventType() === ScriptApp.EventType.CLOCK
-    ) {
-      hasDashboards = true;
-    }
-    if (
-      t.getHandlerFunction() === "addService" &&
-      t.getEventType() === ScriptApp.EventType.ON_EDIT
-    ) {
-      hasEdit = true;
+    var key = t.getHandlerFunction() + "|" + t.getEventType();
+    if (existing[key]) {
+      ScriptApp.deleteTrigger(t);
+    } else {
+      existing[key] = t;
     }
   });
 
-  if (!hasBilling || !hasDashboards) {
-    createTriggers();
+  if (!existing["runMonthlyBilling|" + ScriptApp.EventType.CLOCK]) {
+    ScriptApp.newTrigger("runMonthlyBilling")
+      .timeBased()
+      .onMonthDay(1)
+      .atHour(2)
+      .create();
   }
 
-  if (!hasEdit) {
+  if (!existing["refreshDashboards|" + ScriptApp.EventType.CLOCK]) {
+    ScriptApp.newTrigger("refreshDashboards")
+      .timeBased()
+      .onWeekDay(ScriptApp.WeekDay.MONDAY)
+      .atHour(3)
+      .create();
+  }
+
+  if (!existing["addService|" + ScriptApp.EventType.ON_EDIT]) {
     ScriptApp.newTrigger("addService")
       .forSpreadsheet(SpreadsheetApp.getActive())
       .onEdit()
