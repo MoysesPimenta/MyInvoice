@@ -3,6 +3,7 @@
 
 This project automates invoice management using Google Apps Script and a simple web front end.
 Node.js `20.19.0` is required to ensure compatibility with tooling. Other Node 20 versions may work, but the recommended range is `>=18 <=20`.
+See [docs/deployment_guide.md](docs/deployment_guide.md) for deployment instructions.
 
 ## Running the Front‑End Locally
 
@@ -24,9 +25,6 @@ npx clasp push         # upload local files to Apps Script
 npx clasp open         # open the script editor in your browser
 ```
 
-This project automates invoice management using Google Apps Script and a simple web front end.
-
-Node.js `20.19.0` is required to ensure compatibility with tooling. Other Node 20 versions may work, but the recommended range is `>=18 <=20`.
 
 ## Running Tests in Apps Script
 
@@ -34,4 +32,3 @@ Node.js `20.19.0` is required to ensure compatibility with tooling. Other Node 2
 2. Open the **Extensions → Apps Script** editor from the spreadsheet.
 3. Select **QUnit** from the "Select function" dropdown and click **Run**.
 4. Check the logs/output panel for test results.
- main
