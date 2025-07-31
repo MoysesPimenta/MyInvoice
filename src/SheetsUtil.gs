@@ -11,59 +11,63 @@
  */
 function ensureSheets() {
   var ss = SpreadsheetApp.getActive();
-  var sheetSpecs = {
-    Machines: [
-      "Serial",
-      "Model",
-      "ClientID",
-      "StorageRate",
-      "DateIn",
-      "DateOut",
-      "Status",
-      "LastBilledThrough"
-    ],
-    Services: [
-      "ServiceID",
-      "Serial",
-      "ClientID",
-      "ServiceDate",
-      "ServiceType",
-      "Description",
-      "UnitPrice",
-      "QtyHours",
-      "TotalPrice",
-      "Billed"
-    ],
-    BillingConfig: ["ServiceType", "UnitPrice", "DefaultTax%"],
-    Clients: [
-      "ClientID",
-      "Name",
-      "Address",
-      "ContactName",
-      "ContactPosition",
-      "ContactEmail",
-      "ContactPhone",
-      "TaxID/CNPJ",
-      "Export"
-    ],
-    Invoices: [
-      "InvoiceID",
-      "ClientID",
-      "PeriodStart",
-      "PeriodEnd",
-      "IssueDate",
-      "DueDate",
-      "Total",
-      "Paid",
-      "PaymentDate",
-      "Overdue",
-      "PDFLink",
-      "NFSeNumber",
-      "NFSeType",
-      "LineItemsJSON"
-    ],
-    Dashboards: []
-  };
+  var sheetSpecs = {};
+  sheetSpecs[CONFIG.SHEETS.MACHINES] = [
+    "Serial",
+    "Model",
+    "ClientID",
+    "StorageRate",
+    "DateIn",
+    "DateOut",
+    "Status",
+    "LastBilledThrough"
+  ];
+  sheetSpecs[CONFIG.SHEETS.SERVICES] = [
+    "ServiceID",
+    "Serial",
+    "ClientID",
+    "ServiceDate",
+    "ServiceType",
+    "Description",
+    "UnitPrice",
+    "QtyHours",
+    "TotalPrice",
+    "Billed"
+  ];
+  sheetSpecs[CONFIG.SHEETS.BILLING_CONFIG] = [
+    "ServiceType",
+    "UnitPrice",
+    "DefaultTax%"
+  ];
+  sheetSpecs[CONFIG.SHEETS.CLIENTS] = [
+    "ClientID",
+    "Name",
+    "Address",
+    "ContactName",
+    "ContactPosition",
+    "ContactEmail",
+    "ContactPhone",
+    "TaxID/CNPJ",
+    "Export"
+  ];
+  sheetSpecs[CONFIG.SHEETS.INVOICES] = [
+    "InvoiceID",
+    "ClientID",
+    "PeriodStart",
+    "PeriodEnd",
+    "IssueDate",
+    "DueDate",
+    "Total",
+    "Paid",
+    "PaymentDate",
+    "Overdue",
+    "PDFLink",
+    "NFSeNumber",
+    "NFSeType",
+    "LineItemsJSON"
+  ];
+  sheetSpecs[CONFIG.SHEETS.DASHBOARDS] = [];
+
   Object.keys(sheetSpecs).forEach(function (name) {
     var sheet = ss.getSheetByName(name);
     if (!sheet) {
@@ -110,7 +114,7 @@ function ensureTemplateDoc() {
  */
 function refreshDashboards() {
   var ss = SpreadsheetApp.getActive();
-  var sheet = ss.getSheetByName("Dashboards");
+  var sheet = ss.getSheetByName(CONFIG.SHEETS.DASHBOARDS);
   if (!sheet) {
     return;
   }
@@ -119,12 +123,16 @@ function refreshDashboards() {
   sheet
     .getRange("A1")
     .setFormula(
-      "=QUERY(Invoices!A:K,\"select year(IssueDate), month(IssueDate), sum(Total) where Paid='YES' group by 1,2 label sum(Total) 'Revenue'\",1)"
+      "=QUERY(" +
+        CONFIG.SHEETS.INVOICES +
+        "!A:K,\"select year(IssueDate), month(IssueDate), sum(Total) where Paid='YES' group by 1,2 label sum(Total) 'Revenue'\",1)"
     );
   sheet
     .getRange("E1")
     .setFormula(
-      "=QUERY(Services!A:J,\"select year(ServiceDate), month(ServiceDate), sum(TotalPrice) where Billed='YES' group by 1,2 label sum(TotalPrice) 'ServiceCosts'\",1)"
+      "=QUERY(" +
+        CONFIG.SHEETS.SERVICES +
+        "!A:J,\"select year(ServiceDate), month(ServiceDate), sum(TotalPrice) where Billed='YES' group by 1,2 label sum(TotalPrice) 'ServiceCosts'\",1)"
     );
   var chart = sheet
     .newChart()

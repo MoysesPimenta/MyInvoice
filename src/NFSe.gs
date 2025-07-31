@@ -9,7 +9,7 @@ function issueNFSe(invoiceId) {
     return;
   }
   var ss = SpreadsheetApp.getActive();
-  var invoices = ss.getSheetByName("Invoices");
+  var invoices = ss.getSheetByName(CONFIG.SHEETS.INVOICES);
   if (!invoices) {
     return;
   }

@@ -4,7 +4,11 @@
  * @param {GoogleAppsScript.Events.SheetsOnEdit} e Edit event object.
  */
 function addService(e) {
-  if (!e || !e.range || e.range.getSheet().getName() !== "Services") {
+  if (
+    !e ||
+    !e.range ||
+    e.range.getSheet().getName() !== CONFIG.SHEETS.SERVICES
+  ) {
     return;
   }
   var sheet = e.range.getSheet();
@@ -13,7 +17,9 @@ function addService(e) {
   if (!serviceType) {
     return;
   }
-  var configSheet = SpreadsheetApp.getActive().getSheetByName("BillingConfig");
+  var configSheet = SpreadsheetApp.getActive().getSheetByName(
+    CONFIG.SHEETS.BILLING_CONFIG
+  );
   if (!configSheet) {
     return;
   }

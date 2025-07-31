@@ -116,11 +116,11 @@ function doGet(e) {
   var path = e && e.pathInfo ? String(e.pathInfo).replace(/^\//, "") : "";
   switch (path) {
     case "machines":
-      return sheetToJson_("Machines");
+      return sheetToJson_(CONFIG.SHEETS.MACHINES);
     case "services":
-      return sheetToJson_("Services");
+      return sheetToJson_(CONFIG.SHEETS.SERVICES);
     case "invoices":
-      return sheetToJson_("Invoices");
+      return sheetToJson_(CONFIG.SHEETS.INVOICES);
     default:
       return ContentService.createTextOutput("{}").setMimeType(
         ContentService.MimeType.JSON

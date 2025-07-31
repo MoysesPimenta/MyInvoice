@@ -27,5 +27,10 @@ Ensure that Node.js **20.19.0** is installed locally. Development tools expect a
 2. Click **Run → runMonthlyBilling** in the Apps Script editor.
 3. Verify that a PDF invoice is generated in your Drive and emailed to the client.
 
+### Tips
+
+Sheet names are defined in `Config.gs` under `CONFIG.SHEETS`. If you rename a
+tab, update the corresponding constant.
+
 ## Screenshots
 Include screenshots of the Apps Script editor showing how to add triggers and a GIF of a test invoice run. Save them under the `docs/images` directory.

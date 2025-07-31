@@ -12,5 +12,13 @@ var CONFIG = {
   PDF_FOLDER_ID: "1roHYH7e5g0CcnLsKa_QWdjnJ0hBmo6Fh",
   NFSE_TOKEN: "<<PLACE_YOUR_NFSE_TOKEN>>",
   COLOR_BLUE: "#003B70",
-  PIX_QR_URL: ""
+  PIX_QR_URL: "",
+  SHEETS: {
+    MACHINES: "Machines",
+    SERVICES: "Services",
+    BILLING_CONFIG: "BillingConfig",
+    CLIENTS: "Clients",
+    INVOICES: "Invoices",
+    DASHBOARDS: "Dashboards"
+  }
 };
