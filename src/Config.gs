@@ -10,7 +10,24 @@ var CONFIG = {
   CNPJ: "54566671000143",
   IM: "13006525",
   PDF_FOLDER_ID: "1roHYH7e5g0CcnLsKa_QWdjnJ0hBmo6Fh",
-  NFSE_TOKEN: "<<PLACE_YOUR_NFSE_TOKEN>>",
-  COLOR_BLUE: "#003B70",
-  PIX_QR_URL: ""
+  COLOR_BLUE: "#003B70"
 };
+
+// Lazily load sensitive values from Script Properties
+var SCRIPT_PROPERTIES = PropertiesService.getScriptProperties();
+
+/**
+ * Returns the NFSe API token stored in Script Properties.
+ * @return {string?} token value or null if not set
+ */
+function getNFSeToken() {
+  return SCRIPT_PROPERTIES.getProperty("NFSE_TOKEN");
+}
+
+/**
+ * Returns the PIX QR code URL stored in Script Properties.
+ * @return {string?} QR code image URL or null if not set
+ */
+function getPixQrUrl() {
+  return SCRIPT_PROPERTIES.getProperty("PIX_QR_URL");
+}
