@@ -1,6 +1,10 @@
 // @flow
 /**
- * App entry point: builds custom menus and installs triggers.
+ * Builds the UI menus and registers triggers when the spreadsheet
+ * is opened.
+ *
+ * @return {void} This function modifies the UI and may create
+ *     triggers.
  */
 function onOpen() {
   SpreadsheetApp.getUi()
@@ -18,7 +22,10 @@ function onOpen() {
 }
 
 /**
- * Registers time-driven triggers for monthly billing and overdue updates.
+ * Creates the time-driven triggers used for billing and dashboard
+ * refreshes.
+ *
+ * @return {void} This function adds project triggers.
  */
 function createTriggers() {
   ScriptApp.newTrigger("runMonthlyBilling")
@@ -34,7 +41,9 @@ function createTriggers() {
 }
 
 /**
- * Ensures required triggers exist before running automation.
+ * Verifies that required triggers exist and recreates them when missing.
+ *
+ * @return {void} This function may create new project triggers.
  */
 function ensureTriggers() {
   var triggers = ScriptApp.getProjectTriggers();
@@ -108,9 +117,12 @@ function sheetToJson_(name) {
 }
 
 /**
- * Main GET handler returning JSON for project endpoints.
- * @param {GoogleAppsScript.Events.DoGet} e Event object.
- * @return {GoogleAppsScript.Content.TextOutput} JSON output.
+ * Handles GET requests and returns sheet data in JSON format.
+ *
+ * @param {GoogleAppsScript.Events.DoGet} e Event object from the
+ *     request.
+ * @return {GoogleAppsScript.Content.TextOutput} JSON output. Reads
+ *     spreadsheet data.
  */
 function doGet(e) {
   var path = e && e.pathInfo ? String(e.pathInfo).replace(/^\//, "") : "";

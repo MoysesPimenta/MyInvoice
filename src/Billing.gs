@@ -1,6 +1,8 @@
 // @flow
 /**
- * Aggregates unbilled items and generates monthly invoices.
+ * Aggregates unbilled items, generates invoices and emails clients.
+ *
+ * @return {void} This function updates sheets and sends email.
  */
 function runMonthlyBilling() {
   var ss = SpreadsheetApp.getActive();
@@ -94,11 +96,13 @@ function runMonthlyBilling() {
 }
 
 /**
- * Generates PDF for invoice and emails the client.
- * @param {number} invoiceId Invoice ID.
- * @param {string} itemsTable HTML table with line items.
- * @param {number} total Total invoice value.
+ * Creates a PDF invoice document and emails it to the specified client.
+ *
+ * @param {number} invoiceId Identifier of the invoice.
+ * @param {string} itemsTable HTML table listing line items.
+ * @param {number} total Total invoice amount.
  * @param {string} clientId Client identifier.
+ * @return {void} This function writes files to Drive and sends email.
  */
 function generateInvoicePDF(invoiceId, itemsTable, total, clientId) {
   var ss = SpreadsheetApp.getActive();

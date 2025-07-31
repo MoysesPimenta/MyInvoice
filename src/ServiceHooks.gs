@@ -1,7 +1,9 @@
 // @flow
 /**
- * Sheet onEdit hook for Services sheet.
+ * Handles edits on the Services sheet and populates pricing fields.
+ *
  * @param {GoogleAppsScript.Events.SheetsOnEdit} e Edit event object.
+ * @return {void} This function updates the Services sheet.
  */
 function addService(e) {
   if (!e || !e.range || e.range.getSheet().getName() !== "Services") {

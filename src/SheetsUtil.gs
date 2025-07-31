@@ -7,7 +7,9 @@
 /** @typedef {Object} SheetSpec */
 
 /**
- * Ensures all required sheets exist and have the correct headers.
+ * Ensures all required sheets exist and contain the correct headers.
+ *
+ * @return {void} This function creates and modifies sheets.
  */
 function ensureSheets() {
   var ss = SpreadsheetApp.getActive();
@@ -76,8 +78,10 @@ function ensureSheets() {
 }
 
 /**
- * Creates the invoice template document if not already created.
- * Stores the Doc ID in script properties under 'TEMPLATE_DOC_ID'.
+ * Creates the invoice template document if it does not exist and
+ * stores the ID in script properties.
+ *
+ * @return {string} Document ID. Creates a file when necessary.
  */
 function ensureTemplateDoc() {
   var props = PropertiesService.getScriptProperties();
@@ -106,7 +110,9 @@ function ensureTemplateDoc() {
 }
 
 /**
- * Refreshes dashboard formulas and charts.
+ * Refreshes dashboard formulas and charts to show the latest data.
+ *
+ * @return {void} This function modifies the Dashboards sheet.
  */
 function refreshDashboards() {
   var ss = SpreadsheetApp.getActive();

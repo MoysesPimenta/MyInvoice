@@ -1,7 +1,9 @@
 // @flow
 /**
- * Issues an NFSe for the given invoice.
- * @param {number} invoiceId Invoice ID to issue NFSe for.
+ * Sends the specified invoice to the NFSe API service.
+ *
+ * @param {number} invoiceId Invoice ID to issue.
+ * @return {void} This function writes the NFSe response to the sheet.
  */
 function issueNFSe(invoiceId) {
   if (!invoiceId) {
