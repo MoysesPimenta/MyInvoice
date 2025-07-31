@@ -86,12 +86,19 @@ function ensureTemplateDoc() {
     return docId;
   }
   var doc = DocumentApp.create("Invoice Template");
-  doc
-    .getBody()
+  var body = doc.getBody();
+  body
     .appendParagraph("{{CompanyName}}")
     .setBold(true)
     .setForegroundColor(CONFIG.COLOR_BLUE);
-  doc.getBody().appendParagraph("{{LineItemsTable}}");
+  body.appendParagraph("CNPJ: {{CNPJ}}  IM: {{IM}}");
+  body.appendParagraph("Invoice #{{InvoiceID}}");
+  body.appendParagraph("Issue Date: {{IssueDate}}");
+  body.appendParagraph("Due Date: {{DueDate}}");
+  body.appendParagraph("Client: {{ClientName}}");
+  body.appendParagraph("Contact: {{ContactName}} – {{ContactEmail}}");
+  body.appendParagraph("{{LineItemsTable}}");
+  body.appendParagraph("Total: {{Total}}");
   doc.saveAndClose();
   docId = doc.getId();
   props.setProperty("TEMPLATE_DOC_ID", docId);
@@ -108,10 +115,22 @@ function refreshDashboards() {
     return;
   }
   sheet.clearContents();
+  sheet.clearCharts();
   sheet
     .getRange("A1")
     .setFormula(
-      '=QUERY(Invoices!A:K,"select year(IssueDate), month(IssueDate), sum(Total) where Paid="YES" group by 1,2",1)'
+      "=QUERY(Invoices!A:K,\"select year(IssueDate), month(IssueDate), sum(Total) where Paid='YES' group by 1,2 label sum(Total) 'Revenue'\",1)"
     );
-  // Additional formulas and chart generation could be added here.
+  sheet
+    .getRange("E1")
+    .setFormula(
+      "=QUERY(Services!A:J,\"select year(ServiceDate), month(ServiceDate), sum(TotalPrice) where Billed='YES' group by 1,2 label sum(TotalPrice) 'ServiceCosts'\",1)"
+    );
+  var chart = sheet
+    .newChart()
+    .setChartType(Charts.ChartType.COLUMN)
+    .addRange(sheet.getRange("A1:C12"))
+    .setPosition(1, 8, 0, 0)
+    .build();
+  sheet.insertChart(chart);
 }
