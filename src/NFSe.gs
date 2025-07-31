@@ -17,7 +17,7 @@ function issueNFSe(invoiceId) {
   for (var i = 1; i < data.length; i++) {
     if (String(data[i][0]) === String(invoiceId)) {
       var payload = {
-        token: CONFIG.NFSE_TOKEN,
+        token: getNFSeToken(),
         invoice: data[i]
       };
       var options = {

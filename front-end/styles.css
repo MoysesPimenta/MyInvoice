@@ -1,0 +1,10 @@
+body {
+  padding-top: 4rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #f8f9fa;
+  }
+}

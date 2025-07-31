@@ -1,53 +1,71 @@
 // @flow
 
-// Example of calling Google Apps Script functions.
-// These functions assume the page is running inside an Apps Script web app.
+type FormMeta = { id: string, name: string };
+type Invoice = { number: string, client: string };
 
-function sendData() {
-  const payload = { message: "Hello from the client!" };
-  // google.script.run will invoke the Apps Script function named 'processData'.
-  google.script.run
-    .withSuccessHandler(() => {
-      const output = document.getElementById("output");
-      if (output) {
-        output.textContent = "Data sent successfully.";
-      }
-    })
-    .withFailureHandler((err) => {
-      const output = document.getElementById("output");
-      if (output) {
-        output.textContent = "Error: " + err.message;
-      }
-    })
-    .processData(payload);
+function hideAppsScriptBar(): void {
+  const style = document.createElement('style');
+  style.textContent =
+    '.powered-by-google, .modal-dialog + div { display:none !important; }';
+  document.head.appendChild(style);
 }
 
-function loadData() {
-  // google.script.run will invoke the Apps Script function named 'fetchData'.
-  google.script.run
-    .withSuccessHandler((data) => {
-      const output = document.getElementById("output");
-      if (output) {
-        output.textContent = JSON.stringify(data, null, 2);
-      }
-    })
-    .withFailureHandler((err) => {
-      const output = document.getElementById("output");
-      if (output) {
-        output.textContent = "Error: " + err.message;
-      }
-    })
-    .fetchData();
+function fetchFormMetadata(): Promise<{ forms: Array<FormMeta> }> {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler((data) => resolve(data))
+      .withFailureHandler((err) => reject(err))
+      .getFormMetadata();
+  });
 }
 
-// Attach event listeners once DOM is ready.
-document.addEventListener("DOMContentLoaded", () => {
-  const sendBtn = document.getElementById("send-btn");
-  const loadBtn = document.getElementById("load-btn");
-  if (sendBtn) {
-    sendBtn.addEventListener("click", sendData);
+function fetchRecentInvoices(): Promise<Array<Invoice>> {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler((data) => resolve(data))
+      .withFailureHandler((err) => reject(err))
+      .listRecentInvoices();
+  });
+}
+
+async function populateFormSelect(): Promise<void> {
+  const select = document.getElementById('service-form');
+  if (!select) {
+    return;
   }
-  if (loadBtn) {
-    loadBtn.addEventListener("click", loadData);
+  try {
+    const meta = await fetchFormMetadata();
+    meta.forms.forEach((f) => {
+      const opt = document.createElement('option');
+      opt.value = f.id;
+      opt.textContent = f.name;
+      select.appendChild(opt);
+    });
+  } catch (err) {
+    console.error(err);
   }
+}
+
+async function populateRecentInvoices(): Promise<void> {
+  const list = document.getElementById('recent-invoices');
+  if (!list) {
+    return;
+  }
+  try {
+    const invoices = await fetchRecentInvoices();
+    invoices.forEach((inv) => {
+      const item = document.createElement('li');
+      item.className = 'list-group-item';
+      item.textContent = `${inv.number} - ${inv.client}`;
+      list.appendChild(item);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  hideAppsScriptBar();
+  void populateFormSelect();
+  void populateRecentInvoices();
 });

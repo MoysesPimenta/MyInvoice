@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,19 +10,105 @@
       integrity="sha384-AigLvs9rqsHMvFvA2sPbhCPKfd5W2BtWMpTrBm16SrE1+E1L5aS2+DeVRRJ1Cr9E"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container py-5">
-      <h1 class="mb-3">Invoice Dashboard</h1>
-      <button id="send-btn" class="btn btn-primary">Send Data</button>
-      <button id="load-btn" class="btn btn-secondary ms-2">Load Data</button>
-      <pre id="output" class="mt-4"></pre>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FE1vzzUMsQ9iDUn30T+yecnP+X7iYsJhBKt3vnDnNQfXlBx/OVCkXbkqXA67R9Oj"
-      crossorigin="anonymous"
-    ></script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">MyInvoice</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTabs"
+          aria-controls="navbarTabs"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTabs">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="dashboard-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#dashboard"
+                type="button"
+                role="tab"
+                aria-controls="dashboard"
+                aria-selected="true"
+              >
+                Dashboard
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="service-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#service"
+                type="button"
+                role="tab"
+                aria-controls="service"
+                aria-selected="false"
+              >
+                New Service
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="invoices-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#invoices"
+                type="button"
+                role="tab"
+                aria-controls="invoices"
+                aria-selected="false"
+              >
+                Invoices
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container tab-content" style="padding-top: 4rem;">
+      <section
+        class="tab-pane fade show active"
+        id="dashboard"
+        role="tabpanel"
+        aria-labelledby="dashboard-tab"
+      >
+        <h1 class="mb-3">Dashboard</h1>
+        <ul id="recent-invoices" class="list-group"></ul>
+      </section>
+
+      <section
+        class="tab-pane fade"
+        id="service"
+        role="tabpanel"
+        aria-labelledby="service-tab"
+      >
+        <h1 class="mb-3">New Service</h1>
+        <form id="service-form" class="row g-3"></form>
+      </section>
+
+      <section
+        class="tab-pane fade"
+        id="invoices"
+        role="tabpanel"
+        aria-labelledby="invoices-tab"
+      >
+        <h1 class="mb-3">Invoices</h1>
+        <pre id="output" class="bg-body-tertiary p-3"></pre>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-FE1vzzUMsQ9iDUn30T+yecnP+X7iYsJhBKt3vnDnNQfXlBx/OVCkXbkqXA67R9Oj" crossorigin="anonymous"></script>
     <script src="main.js"></script>
   </body>
 </html>

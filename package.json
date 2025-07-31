@@ -4,5 +4,16 @@
   "private": true,
   "engines": {
     "node": ">=18 <=20"
+  },
+  "scripts": {
+    "lint:js": "eslint . --ext .js",
+    "lint:styles": "stylelint \"**/*.css\""
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "prettier": "^3.2.5",
+    "stylelint": "^16.2.0",
+    "stylelint-config-standard": "^33.0.0"
   }
 }

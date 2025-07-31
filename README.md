@@ -1,5 +1,6 @@
 # MyInvoice
 
+ codex/draft-user_guide.md-and-update-readme.md
 ![Deploy Pages Status](https://github.com/MoysesPimenta/MyInvoice/actions/workflows/deploy_pages.yml/badge.svg)
 
 This project automates invoice management using Google Apps Script and a simple web front end.
@@ -24,3 +25,14 @@ npx clasp login        # authenticate with your Google account
 npx clasp push         # upload local files to Apps Script
 npx clasp open         # open the script editor in your browser
 ```
+
+This project automates invoice management using Google Apps Script and a simple web front end.
+Node.js `20.19.0` is required to ensure compatibility with tooling. Other Node 20 versions may work, but the recommended range is `>=18 <=20`.
+
+## Running Tests in Apps Script
+
+1. Upload the contents of the `tests/` directory to your Apps Script project.
+2. Open the **Extensions → Apps Script** editor from the spreadsheet.
+3. Select **QUnit** from the "Select function" dropdown and click **Run**.
+4. Check the logs/output panel for test results.
+ main
