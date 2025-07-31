@@ -2,6 +2,9 @@
 /**
  * Issues an NFSe for the given invoice.
  * @param {number} invoiceId Invoice ID to issue NFSe for.
+ *
+ * Side effects: calls external API and updates the sheet.
+ * @returns {void}
  */
 function issueNFSe(invoiceId) {
   if (!invoiceId) {

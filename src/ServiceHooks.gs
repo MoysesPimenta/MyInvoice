@@ -2,6 +2,9 @@
 /**
  * Sheet onEdit hook for Services sheet.
  * @param {GoogleAppsScript.Events.SheetsOnEdit} e Edit event object.
+ *
+ * Side effects: updates row pricing fields.
+ * @returns {void}
  */
 function addService(e) {
   if (!e || !e.range || e.range.getSheet().getName() !== "Services") {

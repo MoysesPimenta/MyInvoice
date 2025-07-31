@@ -1,6 +1,9 @@
 // @flow
 /**
- * App entry point: builds custom menus and installs triggers.
+ * Builds spreadsheet menus and ensures automation triggers exist.
+ *
+ * Side effects: modifies the UI and may create triggers.
+ * @returns {void}
  */
 function onOpen() {
   SpreadsheetApp.getUi()
@@ -18,7 +21,10 @@ function onOpen() {
 }
 
 /**
- * Registers time-driven triggers for monthly billing and overdue updates.
+ * Creates time-driven triggers for billing and dashboard refresh.
+ *
+ * Side effects: adds triggers to the project.
+ * @returns {void}
  */
 function createTriggers() {
   ScriptApp.newTrigger("runMonthlyBilling")
@@ -34,7 +40,10 @@ function createTriggers() {
 }
 
 /**
- * Ensures required triggers exist before running automation.
+ * Verifies required triggers exist and recreates any missing ones.
+ *
+ * Side effects: may create triggers on the project.
+ * @returns {void}
  */
 function ensureTriggers() {
   var triggers = ScriptApp.getProjectTriggers();
@@ -77,7 +86,7 @@ function ensureTriggers() {
 /**
  * Returns sheet data as JSON.
  * @param {string} name Sheet name.
- * @return {GoogleAppsScript.Content.TextOutput} JSON output.
+ * @returns {GoogleAppsScript.Content.TextOutput} JSON output.
  * @private
  */
 function sheetToJson_(name) {
@@ -110,7 +119,9 @@ function sheetToJson_(name) {
 /**
  * Main GET handler returning JSON for project endpoints.
  * @param {GoogleAppsScript.Events.DoGet} e Event object.
- * @return {GoogleAppsScript.Content.TextOutput} JSON output.
+ * @returns {GoogleAppsScript.Content.TextOutput} JSON output.
+ *
+ * Side effects: reads spreadsheet data.
  */
 function doGet(e) {
   var path = e && e.pathInfo ? String(e.pathInfo).replace(/^\//, "") : "";

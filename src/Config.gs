@@ -1,7 +1,7 @@
 // @flow
 /**
  * Global configuration constants for invoice automation.
- * @const
+ * @constant
  */
 var CONFIG = {
   COMPANY_NAME: "Devops Consultoria e Desenvolvimento de Softwares LTDA",
@@ -18,7 +18,9 @@ var SCRIPT_PROPERTIES = PropertiesService.getScriptProperties();
 
 /**
  * Returns the NFSe API token stored in Script Properties.
- * @return {string?} token value or null if not set
+ *
+ * Side effects: none.
+ * @returns {string?} Token value or null if not set.
  */
 function getNFSeToken() {
   return SCRIPT_PROPERTIES.getProperty("NFSE_TOKEN");
@@ -26,7 +28,9 @@ function getNFSeToken() {
 
 /**
  * Returns the PIX QR code URL stored in Script Properties.
- * @return {string?} QR code image URL or null if not set
+ *
+ * Side effects: none.
+ * @returns {string?} QR code image URL or null if not set.
  */
 function getPixQrUrl() {
   return SCRIPT_PROPERTIES.getProperty("PIX_QR_URL");
