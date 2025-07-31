@@ -4,5 +4,11 @@
   "private": true,
   "engines": {
     "node": ">=18 <=20"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
