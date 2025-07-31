@@ -75,6 +75,30 @@ function ensureTriggers() {
 }
 
 /**
+ * Returns invoice records as JSON objects for the front-end.
+ * @return {Object[]} Array of invoice rows.
+ */
+function getInvoicesJSON() {
+  var ss = SpreadsheetApp.getActive();
+  var sheet = ss.getSheetByName("Invoices");
+  if (!sheet) {
+    return [];
+  }
+  var data = sheet.getDataRange().getValues();
+  if (data.length === 0) {
+    return [];
+  }
+  var headers = data.shift();
+  return data.map(function (row) {
+    var obj = {};
+    headers.forEach(function (h, i) {
+      obj[String(h)] = row[i];
+    });
+    return obj;
+  });
+}
+
+/**
  * Returns sheet data as JSON.
  * @param {string} name Sheet name.
  * @return {GoogleAppsScript.Content.TextOutput} JSON output.

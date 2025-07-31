@@ -3,14 +3,12 @@
 // Example of calling Google Apps Script functions.
 // These functions assume the page is running inside an Apps Script web app.
 
-function sendData() {
-  const payload = { message: "Hello from the client!" };
-  // google.script.run will invoke the Apps Script function named 'processData'.
+function callAddService() {
   google.script.run
     .withSuccessHandler(() => {
       const output = document.getElementById("output");
       if (output) {
-        output.textContent = "Data sent successfully.";
+        output.textContent = "addService executed.";
       }
     })
     .withFailureHandler((err) => {
@@ -19,11 +17,10 @@ function sendData() {
         output.textContent = "Error: " + err.message;
       }
     })
-    .processData(payload);
+    .addService();
 }
 
-function loadData() {
-  // google.script.run will invoke the Apps Script function named 'fetchData'.
+function loadInvoices() {
   google.script.run
     .withSuccessHandler((data) => {
       const output = document.getElementById("output");
@@ -37,17 +34,17 @@ function loadData() {
         output.textContent = "Error: " + err.message;
       }
     })
-    .fetchData();
+    .getInvoicesJSON();
 }
 
 // Attach event listeners once DOM is ready.
 document.addEventListener("DOMContentLoaded", () => {
-  const sendBtn = document.getElementById("send-btn");
-  const loadBtn = document.getElementById("load-btn");
-  if (sendBtn) {
-    sendBtn.addEventListener("click", sendData);
+  const serviceBtn = document.getElementById("service-btn");
+  const invoicesBtn = document.getElementById("invoices-btn");
+  if (serviceBtn) {
+    serviceBtn.addEventListener("click", callAddService);
   }
-  if (loadBtn) {
-    loadBtn.addEventListener("click", loadData);
+  if (invoicesBtn) {
+    invoicesBtn.addEventListener("click", loadInvoices);
   }
 });
