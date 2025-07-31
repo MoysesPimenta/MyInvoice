@@ -1,6 +1,7 @@
 # Setup Guide
 
 This guide describes how to set up the Invoice Automation system using Google Sheets and Apps Script.
+Ensure that Node.js **20.19.0** is installed locally. Development tools expect a Node version in the range `>=18 <=20`.
 
 ## 1. Create the Spreadsheet
 1. In Google Drive create a new Google Sheet named **Invoice-Automation**.

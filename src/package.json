@@ -1,0 +1,8 @@
+{
+  "name": "myinvoice-backend",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=18 <=20"
+  }
+}
