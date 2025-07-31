@@ -1,6 +1,11 @@
 // @flow
 /**
- * Aggregates unbilled items and generates monthly invoices.
+ * Aggregates unbilled items, creates invoices and emails PDF copies.
+ *
+ * Side effects: reads and writes spreadsheet data, generates PDF files and
+ * sends emails to clients.
+ *
+ * @return {void}
  */
 function runMonthlyBilling() {
   var ss = SpreadsheetApp.getActive();
@@ -94,11 +99,16 @@ function runMonthlyBilling() {
 }
 
 /**
- * Generates PDF for invoice and emails the client.
+ * Generates a PDF invoice document and emails it to the client.
+ *
+ * Side effects: creates files in Drive and sends an email with the PDF
+ * attachment.
+ *
  * @param {number} invoiceId Invoice ID.
  * @param {string} itemsTable HTML table with line items.
  * @param {number} total Total invoice value.
  * @param {string} clientId Client identifier.
+ * @return {void}
  */
 function generateInvoicePDF(invoiceId, itemsTable, total, clientId) {
   var ss = SpreadsheetApp.getActive();

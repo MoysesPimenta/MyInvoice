@@ -5,7 +5,13 @@ module.exports = [
       ecmaVersion: 5,
       sourceType: "script"
     },
-    rules: {}
+    plugins: {
+      jsdoc: require("eslint-plugin-jsdoc")
+    },
+    rules: {
+      "jsdoc/require-jsdoc": "error",
+      "jsdoc/check-types": "error"
+    }
   },
   {
     files: ["front-end/**/*.js"],
@@ -21,11 +27,14 @@ module.exports = [
       }
     },
     plugins: {
-      flowtype: require("eslint-plugin-flowtype")
+      flowtype: require("eslint-plugin-flowtype"),
+      jsdoc: require("eslint-plugin-jsdoc")
     },
     rules: {
       "flowtype/define-flow-type": 1,
-      "flowtype/use-flow-type": 1
+      "flowtype/use-flow-type": 1,
+      "jsdoc/require-jsdoc": "error",
+      "jsdoc/check-types": "error"
     }
   }
 ];
