@@ -112,28 +112,64 @@ function generateInvoicePDF(invoiceId, itemsTable, total, clientId) {
       break;
     }
   }
-  var docId = ensureTemplateDoc();
-  var doc = DocumentApp.openById(docId);
-  var body = doc.getBody().copy();
-  body.replaceText("{{CompanyName}}", CONFIG.COMPANY_NAME);
-  body.replaceText("{{CNPJ}}", CONFIG.CNPJ);
-  body.replaceText("{{InvoiceID}}", String(invoiceId));
-  body.replaceText("{{Total}}", String(total));
-  body.replaceText("{{ClientName}}", clientRow ? clientRow[1] : "");
-  body.replaceText("{{LineItemsTable}}", itemsTable);
-  var newDoc = DocumentApp.create("Invoice " + invoiceId);
-  newDoc.getBody().setText("");
-  newDoc.getBody().appendParagraph(body.getText());
-  newDoc.saveAndClose();
-  var pdf = DriveApp.getFileById(newDoc.getId()).getAs("application/pdf");
-  var folder = DriveApp.getFolderById(CONFIG.PDF_FOLDER_ID);
-  var saved = folder.createFile(pdf).setName("Invoice-" + invoiceId + ".pdf");
   var invoicesData = invoicesSheet.getDataRange().getValues();
+  var invRow;
+  var invRowIndex = -1;
   for (var r = 1; r < invoicesData.length; r++) {
     if (String(invoicesData[r][0]) === String(invoiceId)) {
-      invoicesSheet.getRange(r + 1, 11).setValue(saved.getUrl());
+      invRow = invoicesData[r];
+      invRowIndex = r + 1; // 1-based sheet row
       break;
     }
+  }
+  var docId = ensureTemplateDoc();
+  var templateFile = DriveApp.getFileById(docId);
+  var copy = templateFile.makeCopy("Invoice " + invoiceId);
+  var newDoc = DocumentApp.openById(copy.getId());
+  var body = newDoc.getBody();
+  body.replaceText("{{CompanyName}}", CONFIG.COMPANY_NAME);
+  body.replaceText("{{CNPJ}}", CONFIG.CNPJ);
+  body.replaceText("{{IM}}", CONFIG.IM);
+  body.replaceText("{{InvoiceID}}", String(invoiceId));
+  body.replaceText(
+    "{{IssueDate}}",
+    invRow
+      ? Utilities.formatDate(
+          invRow[4],
+          Session.getScriptTimeZone(),
+          "yyyy-MM-dd"
+        )
+      : ""
+  );
+  body.replaceText(
+    "{{DueDate}}",
+    invRow
+      ? Utilities.formatDate(
+          invRow[5],
+          Session.getScriptTimeZone(),
+          "yyyy-MM-dd"
+        )
+      : ""
+  );
+  body.replaceText("{{Total}}", String(total));
+  body.replaceText("{{ClientName}}", clientRow ? clientRow[1] : "");
+  body.replaceText("{{ContactName}}", clientRow ? clientRow[3] : "");
+  body.replaceText("{{ContactEmail}}", clientRow ? clientRow[5] : "");
+  body.replaceText("{{LineItemsTable}}", itemsTable);
+  if (CONFIG.PIX_QR_URL) {
+    try {
+      var img = UrlFetchApp.fetch(CONFIG.PIX_QR_URL).getBlob();
+      body.appendImage(img);
+    } catch (e) {
+      Logger.log("Failed to fetch QR code: " + e);
+    }
+  }
+  newDoc.saveAndClose();
+  var pdf = DriveApp.getFileById(copy.getId()).getAs("application/pdf");
+  var folder = DriveApp.getFolderById(CONFIG.PDF_FOLDER_ID);
+  var saved = folder.createFile(pdf).setName("Invoice-" + invoiceId + ".pdf");
+  if (invRowIndex !== -1) {
+    invoicesSheet.getRange(invRowIndex, 11).setValue(saved.getUrl());
   }
   MailApp.sendEmail({
     to: clientRow ? clientRow[5] : "",

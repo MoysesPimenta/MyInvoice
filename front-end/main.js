@@ -3,53 +3,51 @@
 // Example of calling Google Apps Script functions.
 // These functions assume the page is running inside an Apps Script web app.
 
-function sendData(): void {
-  const payload = { message: 'Hello from the client!' };
+function sendData() {
+  const payload = { message: "Hello from the client!" };
   // google.script.run will invoke the Apps Script function named 'processData'.
-  google.script
-    .run
+  google.script.run
     .withSuccessHandler(() => {
-      const output = document.getElementById('output');
+      const output = document.getElementById("output");
       if (output) {
-        output.textContent = 'Data sent successfully.';
+        output.textContent = "Data sent successfully.";
       }
     })
     .withFailureHandler((err) => {
-      const output = document.getElementById('output');
+      const output = document.getElementById("output");
       if (output) {
-        output.textContent = 'Error: ' + err.message;
+        output.textContent = "Error: " + err.message;
       }
     })
     .processData(payload);
 }
 
-function loadData(): void {
+function loadData() {
   // google.script.run will invoke the Apps Script function named 'fetchData'.
-  google.script
-    .run
+  google.script.run
     .withSuccessHandler((data) => {
-      const output = document.getElementById('output');
+      const output = document.getElementById("output");
       if (output) {
         output.textContent = JSON.stringify(data, null, 2);
       }
     })
     .withFailureHandler((err) => {
-      const output = document.getElementById('output');
+      const output = document.getElementById("output");
       if (output) {
-        output.textContent = 'Error: ' + err.message;
+        output.textContent = "Error: " + err.message;
       }
     })
     .fetchData();
 }
 
 // Attach event listeners once DOM is ready.
-document.addEventListener('DOMContentLoaded', () => {
-  const sendBtn = document.getElementById('send-btn');
-  const loadBtn = document.getElementById('load-btn');
+document.addEventListener("DOMContentLoaded", () => {
+  const sendBtn = document.getElementById("send-btn");
+  const loadBtn = document.getElementById("load-btn");
   if (sendBtn) {
-    sendBtn.addEventListener('click', sendData);
+    sendBtn.addEventListener("click", sendData);
   }
   if (loadBtn) {
-    loadBtn.addEventListener('click', loadData);
+    loadBtn.addEventListener("click", loadData);
   }
 });
