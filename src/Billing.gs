@@ -156,9 +156,10 @@ function generateInvoicePDF(invoiceId, itemsTable, total, clientId) {
   body.replaceText("{{ContactName}}", clientRow ? clientRow[3] : "");
   body.replaceText("{{ContactEmail}}", clientRow ? clientRow[5] : "");
   body.replaceText("{{LineItemsTable}}", itemsTable);
-  if (CONFIG.PIX_QR_URL) {
+  var qrUrl = getPixQrUrl();
+  if (qrUrl) {
     try {
-      var img = UrlFetchApp.fetch(CONFIG.PIX_QR_URL).getBlob();
+      var img = UrlFetchApp.fetch(qrUrl).getBlob();
       body.appendImage(img);
     } catch (e) {
       Logger.log("Failed to fetch QR code: " + e);
