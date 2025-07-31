@@ -7,7 +7,8 @@
   },
   "scripts": {
     "lint:js": "eslint . --ext .js",
-    "lint:styles": "stylelint \"**/*.css\""
+    "lint:styles": "stylelint \"**/*.css\"",
+    "test": "node tests/billing.test.js"
   },
   "devDependencies": {
     "eslint": "^8.56.0",

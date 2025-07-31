@@ -18,42 +18,74 @@ function runMonthlyBilling() {
   var year = billingDate.getFullYear();
   var month = billingDate.getMonth();
 
-  var clients = clientsSheet.getDataRange().getValues();
-  var services = servicesSheet.getDataRange().getValues();
-  var machines = machinesSheet.getDataRange().getValues();
+  var invoiceMap = getStorageCharges(machinesSheet, billingDate);
+  var svcCharges = getServiceCharges(servicesSheet);
 
-  var invoiceMap = {};
+  Object.keys(svcCharges).forEach(function (cid) {
+    invoiceMap[cid] = invoiceMap[cid] || [];
+    Array.prototype.push.apply(invoiceMap[cid], svcCharges[cid]);
+  });
 
-  // Gather storage charges
+  createInvoices(invoiceMap, invoicesSheet, year, month, billingDate);
+}
+
+/**
+ * Returns a map of client IDs to storage charge line items.
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet Machines sheet.
+ * @param {Date} billingDate Date of billing.
+ * @return {Object<string, Array<Object>>} Map of charges.
+ */
+function getStorageCharges(sheet, billingDate) {
+  var machines = sheet.getDataRange().getValues();
+  var charges = {};
   for (var m = 1; m < machines.length; m++) {
     var machine = machines[m];
     if (machine[6] === "stored") {
       var clientId = machine[2];
       var rate = machine[3];
-      invoiceMap[clientId] = invoiceMap[clientId] || [];
-      invoiceMap[clientId].push({
+      charges[clientId] = charges[clientId] || [];
+      charges[clientId].push({
         description: "Storage for " + machine[0],
         price: rate
       });
-      machinesSheet.getRange(m + 1, 8).setValue(billingDate); // LastBilledThrough
+      sheet.getRange(m + 1, 8).setValue(billingDate);
     }
   }
+  return charges;
+}
 
-  // Gather unbilled services
+/**
+ * Returns a map of client IDs to service charge line items.
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet Services sheet.
+ * @return {Object<string, Array<Object>>} Map of charges.
+ */
+function getServiceCharges(sheet) {
+  var services = sheet.getDataRange().getValues();
+  var charges = {};
   for (var s = 1; s < services.length; s++) {
     var svc = services[s];
     if (svc[9] !== "YES") {
       var cId = svc[2];
-      invoiceMap[cId] = invoiceMap[cId] || [];
-      invoiceMap[cId].push({
+      charges[cId] = charges[cId] || [];
+      charges[cId].push({
         description: svc[5],
         price: svc[8]
       });
-      servicesSheet.getRange(s + 1, 10).setValue("YES");
+      sheet.getRange(s + 1, 10).setValue("YES");
     }
   }
+  return charges;
+}
 
-  // Create invoices
+/**
+ * Appends invoice rows and generates PDFs.
+ * @param {Object<string, Array<Object>>} invoiceMap Map of line items.
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} invoicesSheet Invoices sheet.
+ * @param {number} year Billing year.
+ * @param {number} month Billing month (0-based).
+ * @param {Date} billingDate Date invoice generated.
+ */
+function createInvoices(invoiceMap, invoicesSheet, year, month, billingDate) {
   var nextId = invoicesSheet.getLastRow();
   Object.keys(invoiceMap).forEach(function (clientId) {
     var items = invoiceMap[clientId];
@@ -65,11 +97,7 @@ function runMonthlyBilling() {
     for (var i = 0; i < items.length; i++) {
       total += Number(items[i].price);
       table +=
-        "<tr><td>" +
-        items[i].description +
-        "</td><td>" +
-        items[i].price +
-        "</td></tr>";
+        "<tr><td>" + items[i].description + "</td><td>" + items[i].price + "</td></tr>";
     }
     table += "</table>";
     nextId += 1;
