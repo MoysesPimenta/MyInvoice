@@ -3,6 +3,33 @@
 type FormMeta = { id: string, name: string };
 type Invoice = { number: string, client: string };
 
+function sendData(): void {
+  const form = document.getElementById("service-form");
+  if (!(form instanceof HTMLFormElement)) {
+    return;
+  }
+  const record = Object.fromEntries(new FormData(form).entries());
+  google.script.run
+    .withSuccessHandler(() => {
+      form.reset();
+      loadData();
+    })
+    .withFailureHandler((err) => console.error(err))
+    .addServiceRecord(record);
+}
+
+function loadData(): void {
+  google.script.run
+    .withSuccessHandler((data) => {
+      const out = document.getElementById("output");
+      if (out) {
+        out.textContent = JSON.stringify(data, null, 2);
+      }
+    })
+    .withFailureHandler((err) => console.error(err))
+    .getInvoicesJSON();
+}
+
 function hideAppsScriptBar(): void {
   const style = document.createElement("style");
   style.textContent =
@@ -68,4 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
   hideAppsScriptBar();
   void populateFormSelect();
   void populateRecentInvoices();
+  const sendBtn = document.getElementById("send-btn");
+  if (sendBtn) sendBtn.addEventListener("click", sendData);
+  const loadBtn = document.getElementById("load-btn");
+  if (loadBtn) loadBtn.addEventListener("click", loadData);
 });

@@ -125,3 +125,38 @@ function doGet(e) {
       );
   }
 }
+
+/**
+ * Returns invoices data as JSON for the web front-end.
+ * @return {GoogleAppsScript.Content.TextOutput} JSON output.
+ */
+function getInvoicesJSON() {
+  return sheetToJson_("Invoices");
+}
+
+/**
+ * Returns metadata for available service forms.
+ * @return {{forms: Array<{id: string, name: string}>}}
+ */
+function getFormMetadata() {
+  return { forms: [{ id: "service", name: "Service Entry" }] };
+}
+
+/**
+ * Lists the five most recent invoices for the dashboard.
+ * @return {Array<{number: string, client: string}>}
+ */
+function listRecentInvoices() {
+  var sheet = SpreadsheetApp.getActive().getSheetByName("Invoices");
+  if (!sheet) {
+    return [];
+  }
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) {
+    return [];
+  }
+  data.shift();
+  return data.slice(-5).map(function (row) {
+    return { number: String(row[0]), client: row[1] };
+  });
+}
