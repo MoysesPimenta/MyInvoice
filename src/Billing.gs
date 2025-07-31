@@ -4,10 +4,10 @@
  */
 function runMonthlyBilling() {
   var ss = SpreadsheetApp.getActive();
-  var machinesSheet = ss.getSheetByName("Machines");
-  var servicesSheet = ss.getSheetByName("Services");
-  var invoicesSheet = ss.getSheetByName("Invoices");
-  var clientsSheet = ss.getSheetByName("Clients");
+  var machinesSheet = ss.getSheetByName(CONFIG.SHEETS.MACHINES);
+  var servicesSheet = ss.getSheetByName(CONFIG.SHEETS.SERVICES);
+  var invoicesSheet = ss.getSheetByName(CONFIG.SHEETS.INVOICES);
+  var clientsSheet = ss.getSheetByName(CONFIG.SHEETS.CLIENTS);
 
   if (!machinesSheet || !servicesSheet || !invoicesSheet || !clientsSheet) {
     SpreadsheetApp.getUi().alert("Missing sheets. Run ensureSheets first.");
@@ -102,8 +102,8 @@ function runMonthlyBilling() {
  */
 function generateInvoicePDF(invoiceId, itemsTable, total, clientId) {
   var ss = SpreadsheetApp.getActive();
-  var clientsSheet = ss.getSheetByName("Clients");
-  var invoicesSheet = ss.getSheetByName("Invoices");
+  var clientsSheet = ss.getSheetByName(CONFIG.SHEETS.CLIENTS);
+  var invoicesSheet = ss.getSheetByName(CONFIG.SHEETS.INVOICES);
   var data = clientsSheet.getDataRange().getValues();
   var clientRow;
   for (var i = 1; i < data.length; i++) {

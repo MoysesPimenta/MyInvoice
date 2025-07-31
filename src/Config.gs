@@ -10,7 +10,15 @@ var CONFIG = {
   CNPJ: "54566671000143",
   IM: "13006525",
   PDF_FOLDER_ID: "1roHYH7e5g0CcnLsKa_QWdjnJ0hBmo6Fh",
-  COLOR_BLUE: "#003B70"
+  COLOR_BLUE: "#003B70",
+  SHEETS: {
+    MACHINES: "Machines",
+    SERVICES: "Services",
+    BILLING_CONFIG: "BillingConfig",
+    CLIENTS: "Clients",
+    INVOICES: "Invoices",
+    DASHBOARDS: "Dashboards"
+  }
 };
 
 // Lazily load sensitive values from Script Properties
